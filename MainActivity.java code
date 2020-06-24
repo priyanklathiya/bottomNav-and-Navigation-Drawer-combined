@@ -1,0 +1,102 @@
+package com.example.bottomnavandnavdrawer;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.MenuItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.widget.Toolbar;
+import android.os.Bundle;
+
+public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout drawer;
+    private BottomNavigationView bottom_nav;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        bottom_nav = findViewById(R.id.bottom_nav);
+        bottom_nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.nav_home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+                        return true;
+                    case R.id.nav_tv:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,  new TvFragment()).commit();
+                        return true;
+                    case R.id.nav_movies:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new MoviesFragment()).commit();
+                        return true;
+                    case R.id.nav_series:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new SeriesFragment()).commit();
+                        return true;
+                }
+                return false;
+            }
+        });
+        // bottom_nav.setSelectedItemId(R.id.nav_home);
+
+        if (savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_downloads:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new DownloadsFragment()).commit();
+                        break;
+                    case R.id.nav_watchlist:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new WatchlistFragment()).commit();
+                        break;
+                    case R.id.nav_languages:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new LanguagesFragment()).commit();
+                        break;
+                    case R.id.nav_genre:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new GenreFragment()).commit();
+                        break;
+                    case R.id.nav_help:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HelpFragment()).commit();
+                        break;
+                    case R.id.nav_aboutus:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new AboutUsFragment()).commit();
+                        break;
+                }
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+}
